@@ -1,18 +1,10 @@
 const express = require("express")
+const {userAuth} = require("./middlewares/auth")
 
 const app = express()
 
-app.get("/user",
-(req,res,next)=>{
+app.get("/user",userAuth,(req,res,next)=>{
     res.send("Route handler 1")
-    next()
-},
-(req,res,next)=>{
-    res.send("Route handler 2")
-    next()
-},
-(req,res)=>{
-    res.send("Route handler 3")
 })
 
 app.listen(7777,()=>{
