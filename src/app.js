@@ -5,17 +5,12 @@ const User = require("./models/user")
 
 const app = express()
 
+app.use(express.json())
 
 app.post("/signup",async(req,res)=>{
-   const user = new User({
-     firstName:"Yaswanth",
-     lastName:"krishna",
-     emailId:"yaswanth@gmail.com",
-     password:"yaswanth@123"
-   })
-
+   const user = new User(req.body)
    try{
-       await user.save()
+    await user.save()
    res.send("Signed up succesfully")
    }catch(err){
     console.error(err)
