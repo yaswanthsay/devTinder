@@ -15,7 +15,48 @@ app.post("/signup",async(req,res)=>{
    }catch(err){
     console.error(err)
    }
+})
 
+// app.get("/user",async(req,res)=>{
+
+//     const userEmail = req.body.emailId
+//     try{
+//     const user = await User.find({emailId:userEmail})
+//     if(!user){
+//         res.status(404).send("User not found")
+//     }else{
+//     res.send(user)
+//     }
+//     }catch(err){
+//         console.error(err)
+//     }
+// })
+
+app.get("/feed",async(req,res)=>{
+    try{
+        const user = await User.find()
+        if(!user){
+            res.status(404).send("User not found")
+        }else{
+            res.send(user)
+        }
+    }catch(err){
+        console.error(err)
+    }
+})
+
+app.get("/user",async(req,res)=>{
+    const userId = req.body._id
+    try{
+       const user = await User.findById({_id:userId})
+       if(!user){
+        res.status(404).send("User not found")
+       }else{
+        res.send(user)
+       }
+    }catch(err){
+        console.error(err)
+    }
 })
 
 connectDB()
