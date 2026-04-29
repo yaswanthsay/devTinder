@@ -59,20 +59,30 @@ app.get("/user",async(req,res)=>{
     }
 })
 
-app.patch("/user",async(req,res)=>{
-    const userId = req.body.userId
-    const data = req.body
-    try{
-      if(!data){
-        res.status(404).send("User not found")
-      }else{
-       await User.findByIdAndUpdate({_id:userId},data)
-       res.send("User updated succesfully")
+app.patch("/user", async (req, res) => {
+  const { userId, ...data } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      data,
+      {
+        new: true,
+        runValidators: true
       }
-    }catch(err){
-        console.error(err)
-    }
-})
+    );
+
+    res.json({
+      message: "User updated successfully",
+      user: updatedUser
+    });
+
+  } catch (err) {
+    res.status(400).json({
+      message: err.message
+    });
+  }
+});
 
 app.delete("/user",async(req,res)=>{
        const userId = req.body.userId
