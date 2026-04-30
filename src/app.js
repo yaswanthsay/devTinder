@@ -59,10 +59,18 @@ app.get("/user",async(req,res)=>{
     }
 })
 
-app.patch("/user", async (req, res) => {
-  const { userId, ...data } = req.body;
+app.patch("/user/:userId", async (req, res) => {
+    const userId = req?.params?.userId
+  const { data } = req.body;
 
   try {
+    const ALLOWED_UPDATES = ["skills","gender","age","about"]
+    const isAllowedUpdates = Object.keys(data).every((k)=>{
+        ALLOWED_UPDATES.includes(k)
+    }) 
+    if(!isAllowedUpdates){
+        throw new Error("Updates not allowed")
+    }
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       data,
